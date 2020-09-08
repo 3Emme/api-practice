@@ -26,4 +26,27 @@ $(document).ready(function() {
       $('.showTemp').text(`The temperature in Kelvins is ${response.main.temp} degrees.`);
     }
   });
+  // Gif Event Handler
+$('#gifBtn').click(function() {
+  const inputtedSearchTerm = $("#giphy").val();
+  $("#giphy").val("");
+
+  let request = new XMLHttpRequest;
+  const url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${inputtedSearchTerm}&limit=25&offset=0&rating=g&lang=en`
+
+  request.onreadystatechange = function () {
+    if(this.readyState === 4 && this.status === 200) {
+      const response = JSON.parse(this.responseText);
+      getElements(response);
+    };
+  };
+
+  request.open("GET", url, true);
+  request.send();
+
+  function getElements(response) {
+    $(".showGif").html(`"<img src=${response.embed_url}>"`);
+  };
+});
+
 });
