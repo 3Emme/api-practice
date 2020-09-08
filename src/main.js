@@ -32,21 +32,27 @@ $('#gifBtn').click(function() {
   $("#giphy").val("");
 
   let request = new XMLHttpRequest;
-  const url = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${inputtedSearchTerm}&limit=25&offset=0&rating=g&lang=en`
+  const url = `https://api.giphy.com/v1/gifs/search?api_key=HarRr5q6bWkpB09LFEA0PK5jk3kvIwZF&q=${inputtedSearchTerm}&limit=25&offset=0&rating=g&lang=en`
 
   request.onreadystatechange = function () {
     if(this.readyState === 4 && this.status === 200) {
       const response = JSON.parse(this.responseText);
       getElements(response);
-    };
+    }
   };
 
   request.open("GET", url, true);
   request.send();
 
   function getElements(response) {
-    $(".showGif").html(`"<img src=${response.embed_url}>"`);
-  };
+    console.log(response);
+    console.log(response.data[0].images.downsized.url);
+    $(".showGif").html("<p>Here is your result!</p>");
+    response.data.forEach(function(elem){
+      $(".showGif").append(`<img src=${elem.images.downsized.url}>`);
+    });
+    // $(".showGif").html(`<img src=${response.data[0].images.downsized.url}>`);
+  }
 });
 
 });
